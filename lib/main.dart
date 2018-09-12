@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:video_player/video_player.dart';
+import 'package:wugian_flutter/video_player_lee.dart';
+//import 'package:video_player/video_player.dart';
 
+//void main() => runApp(new VideoApp("url"));
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -16,14 +18,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       home: new MyHomePage(title: 'WUGIAN'),
-      routes: <String, WidgetBuilder>{
-        // 这里可以定义静态路由，不能传递参数
-        '/router/list': (_) => new MyHomePage(),
-//        '/router/video': (_) => new VideoApp(),
-      },
     );
   }
 }
+
+var id = 0;
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -84,8 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-//    _pullNet();
-    _httpClient();
+    _pullNet();
+//    _httpClient();
   }
 
   void _decrementCounter() {
@@ -142,11 +141,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return new GestureDetector(
         onTap: () {
           print(item.toString());
+//          Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+//            return new SecondPage(title: data["envelopePic"]);
+//          }));
+          id = (id == 0 ? 1 : 0);
           Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-            return new VideoApp('${item['envelopePic']}');
+//            return new VideoApp(data[0]["envelopePic"]);
+            return new SecondPage(
+              title: data[0]["envelopePic"],
+            );
           }));
-//          Navigator.push(context, route)
-//          showCustomDialog(context);
         },
         child: new Row(
           children: <Widget>[
@@ -276,16 +280,18 @@ class _MyHomePageState extends State<MyHomePage> {
 //  }
 }
 
-class VideoApp extends StatefulWidget {
+class SecondPage extends StatefulWidget {
+  SecondPage({this.title});
+
+  final String title;
+
   @override
-  String url;
-
-  VideoApp(this.url);
-
-  _VideoAppState createState() => _VideoAppState();
+  State<StatefulWidget> createState() {
+    return new SecondState();
+  }
 }
 
-class _VideoAppState extends State<VideoApp> {
+class SecondState extends State<SecondPage> {
   VideoPlayerController _controller;
   bool _isPlaying = false;
 
@@ -294,9 +300,13 @@ class _VideoAppState extends State<VideoApp> {
     super.initState();
 
     print("════════════════════════");
-    print("═══════════════");
+    print('${widget.title != null ? widget.title : ''}');
+    print("════════════════════════");
+    id = 0;
     _controller = VideoPlayerController.network(
-      'http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4',
+      id == 0
+          ? 'http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_20mb.mp4'
+          : 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
     )
       ..addListener(() {
         final bool isPlaying = _controller.value.isPlaying;
@@ -307,7 +317,7 @@ class _VideoAppState extends State<VideoApp> {
         }
       })
       ..initialize().then((_) {
-        _controller.play();
+//        _controller.play;
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
       });
