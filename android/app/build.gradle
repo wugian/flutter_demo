@@ -38,10 +38,10 @@ android {
 
     signingConfigs {
         myConfig1 {
-            storeFile file('./qn_general.jks')
-            storePassword "just-guess"
+            storeFile file('./wugian_test_key.jks')
+            storePassword "iloveyou"
             keyAlias 'wugian'
-            keyPassword 'just-guess'
+            keyPassword 'iloveyou'
         }
     }
 
