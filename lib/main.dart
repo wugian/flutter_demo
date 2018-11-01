@@ -44,12 +44,13 @@ class _PT extends State<PT> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+        backgroundColor: Colors.black,
         body: new Center(
-      child: new GridView.count(
-        children: data != null ? _getItem() : _loading(),
-        crossAxisCount: 4,
-      ),
-    )
+          child: new GridView.count(
+            children: data != null ? _getItem() : _loading(),
+            crossAxisCount: 3,
+          ),
+        )
 //      body:
         );
   }
@@ -65,7 +66,7 @@ class _PT extends State<PT> {
             new CircularProgressIndicator(
               strokeWidth: 1.0,
             ),
-            new Text("正在加载"),
+            new Text("loading......"),
           ],
         )),
       )
@@ -80,7 +81,7 @@ class _PT extends State<PT> {
           child: _getRowWidget(item),
         ),
 //        elevation: 3.0,
-//        margin: const EdgeInsets.all(1.0),
+//        margins: const EdgeInsets.all(1.0),
       );
     }).toList();
   }
@@ -105,8 +106,8 @@ class _PT extends State<PT> {
                     placeholder:
                         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536774923506&di=2a3e4d720505d32d4c569220856abb0d&imgtype=0&src=http%3A%2F%2F06.imgmini.eastday.com%2Fmobile%2F20180724%2F20180724224829_40f964a0b352223127c92a66e6b14054_3.jpeg",
                     image: "${item['xinimg']}",
-                    width: 80.0,
-                    height: 80.0,
+                    width: 114.0,
+                    height: 114.0,
                     fit: BoxFit.fitHeight,
                   ),
                   new Positioned(
@@ -134,8 +135,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Flutter Demo',
       theme: new ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: Colors.blue, backgroundColor: Colors.black),
       home: new PT(),
     );
   }
@@ -181,12 +181,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return new Scaffold(
-      body: new GridView.count(
-        children: data != null ? _getItem() : _loading(),
-        crossAxisCount: 3,
-      ),
-    );
+        body: new GridView.count(
+          children: data != null ? _getItem() : _loading(),
+          crossAxisCount: 3,
+        ),
+        backgroundColor: Colors.black);
   }
 
   List<Widget> _loading() {
@@ -200,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
             new CircularProgressIndicator(
               strokeWidth: 1.0,
             ),
-            new Text("正在加载"),
+            new Text("loading......"),
           ],
         )),
       )
@@ -208,14 +209,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Widget> _getItem() {
+//    return data.map((item) {
+//      return new Center(
+//        child: new Padding(
+//          padding: const EdgeInsets.all(1.0),
+//          child: _getRowWidget(item),
+//        ),
+////        elevation: 3.0,
+////        margins: const EdgeInsets.all(1.0),
+//      );
+//    }).toList();
     return data.map((item) {
-      return new Card(
+      return new Center(
         child: new Padding(
           padding: const EdgeInsets.all(1.0),
           child: _getRowWidget(item),
         ),
-        elevation: 3.0,
-        margin: const EdgeInsets.all(10.0),
+//        elevation: 3.0,
+//        margin: const EdgeInsets.all(1.0),
       );
     }).toList();
   }
@@ -329,15 +340,16 @@ class SecondState extends State<SecondPage> {
                 )
               : Container(),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _controller.value.isPlaying
-              ? _controller.pause
-              : _controller.play,
-//        onPressed: widget.dispose(),
-          child: Icon(
-            Icons.arrow_back,
-          ),
-        ),
+//        floatingActionButton: FloatingActionButton(
+//          onPressed: _controller.value.isPlaying
+//              ? _controller.pause
+//              : _controller.play,
+////        onPressed: widget.dispose(),
+//          child: Icon(
+//            Icons.arrow_back,
+//          ),
+//        ),
+        backgroundColor: Colors.black,
       ),
     );
   }
