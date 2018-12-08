@@ -6,6 +6,7 @@ import 'package:wugian_flutter/video_player_lee.dart';
 //void main() => runApp(new VideoApp("url"));
 //void main() => runApp(new PT());
 void main() => runApp(new MyApp());
+String pt, name;
 
 class PT extends StatefulWidget {
   @override
@@ -43,16 +44,18 @@ class _PT extends State<PT> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        backgroundColor: Colors.black,
-        body: new Center(
-          child: new GridView.count(
-            children: data != null ? _getItem() : _loading(),
-            crossAxisCount: 3,
-          ),
-        )
+    return new GestureDetector(
+      child: new Scaffold(
+          backgroundColor: Colors.black,
+          body: new Center(
+            child: new GridView.count(
+              children: data != null ? _getItem() : _loading(),
+              crossAxisCount: 3,
+            ),
+          )
 //      body:
-        );
+          ),
+    );
   }
 
   List<Widget> _loading() {
@@ -89,7 +92,8 @@ class _PT extends State<PT> {
   Widget _getRowWidget(item) {
     return new GestureDetector(
         onTap: () {
-          print(item.toString());
+          print("**tt1:" + item.toString());
+          pt = item['title'];
           Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
             return new MyHomePage(
               title: item["address"],
@@ -181,7 +185,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
         body: new GridView.count(
           children: data != null ? _getItem() : _loading(),
@@ -234,12 +237,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _getRowWidget(item) {
     return new GestureDetector(
         onTap: () {
-          print(item.toString());
+          print("**tt2" + item.toString());
+          name = item['title'];
           Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
             return new SecondPage(
               title: item["address"],
             );
           }));
+        },
+        onDoubleTap: () {
+          Navigator.of(context).pop(widget);
         },
         child: new Row(
           children: <Widget>[
@@ -329,6 +336,31 @@ class SecondState extends State<SecondPage> {
 
   @override
   Widget build(BuildContext context) {
+    return new GestureDetector(
+        onDoubleTap: () {
+          Navigator.of(context).pop(widget);
+        },
+        child: Scaffold(
+          body: Center(
+            child: _controller.value.initialized
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+//                  child: VideoPlayer(_controller),
+                    child: new Stack(
+                      children: <Widget>[
+                        VideoPlayer(_controller),
+                        new Text(
+                          pt + " || " + name,
+                          style:
+                              new TextStyle(color: Colors.blue, fontSize: 18.0),
+                        )
+                      ],
+                    ),
+                  )
+                : Container(),
+          ),
+          backgroundColor: Colors.black,
+        ));
     return MaterialApp(
       title: 'Video Demo',
       home: Scaffold(
@@ -336,7 +368,17 @@ class SecondState extends State<SecondPage> {
           child: _controller.value.initialized
               ? AspectRatio(
                   aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
+//                  child: VideoPlayer(_controller),
+                  child: new Stack(
+                    children: <Widget>[
+                      VideoPlayer(_controller),
+                      new Text(
+                        pt + " || " + name,
+                        style:
+                            new TextStyle(color: Colors.blue, fontSize: 18.0),
+                      )
+                    ],
+                  ),
                 )
               : Container(),
         ),
